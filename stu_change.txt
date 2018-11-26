@@ -1,0 +1,206 @@
+package sy;
+
+import java.awt.Choice;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
+public class stu_change extends JFrame implements ActionListener{
+	private static final String str = null;
+	JPanel jp1,jp2,jp3,jp4,jp5,jp6,jp7,jp8,jp9,jp10,jp11;
+	JLabel jlb1,jlb2,jlb3,jlb4,jlb5,jlb6,jlb7,jlb8,jlb9,jlb10;
+	JButton jb1,jb2;
+	JRadioButton jrb1,jrb2;
+	ButtonGroup bg;
+	JTextField jtxtName=new JTextField(15);
+	JTextField jtxtage=new JTextField(15);
+	JTextField jtxtno=new JTextField(15);
+	JTextField jtxtnumber=new JTextField(15);
+	JTextField jtxtid=new JTextField(15);
+	JTextField jtxtdoorno=new JTextField(15);
+	JTextField jtxtbedno=new JTextField(15);
+	Choice sdept=new Choice();
+	
+	
+
+	public stu_change(String str) throws SQLException{
+		jp1=new JPanel();
+		jp2=new JPanel();
+		jp3=new JPanel();
+		jp4=new JPanel();
+		jp5=new JPanel();
+		jp6=new JPanel();
+		jp7=new JPanel();
+		jp8=new JPanel();
+		jp9=new JPanel();
+		jp10=new JPanel();
+		jp11=new JPanel();
+		jlb1=new JLabel("修改学生信息");
+		jlb2=new JLabel("  姓名 ");
+		jlb3=new JLabel("  年龄 ");
+		jlb4=new JLabel("性别 ");
+		jlb5=new JLabel("  学号");
+		jlb6=new JLabel(" 手机号");
+		jlb7=new JLabel("身份证号");
+		jlb8=new JLabel("院系名称");
+		jlb9=new JLabel(" 宿舍号");
+		jlb10=new JLabel("宿舍床号");
+		jb1=new JButton("确定");
+		jb1.addActionListener(this);
+		jb2=new JButton("返回");
+		jb2.addActionListener(this);
+		jrb1=new JRadioButton("男");
+		jrb2=new JRadioButton("女");
+	
+		bg=new ButtonGroup();
+	    Font m=new Font("TimesRoman",Font.BOLD,25);
+	    jlb1.setFont(m);
+		
+		Font m1=new Font("TimesRoman",Font.BOLD,20);
+	    jrb1.setFont(m1);
+	    jrb2.setFont(m1);
+	    jlb2.setFont(m1);
+	    jlb3.setFont(m1);
+	    jlb4.setFont(m1);
+	    jlb5.setFont(m1);
+	    jlb6.setFont(m1);
+	    jlb7.setFont(m1);
+	    jlb8.setFont(m1);
+	    jlb9.setFont(m1);
+	    jlb10.setFont(m1);
+		bg.add(jrb1);
+		bg.add(jrb2);
+		sdept.add("数统院");
+		sdept.add("信工院");
+		sdept.add("外国院");
+		sdept.setFont(m1);
+		sdept.setPreferredSize(new Dimension(200,30));
+		jp1.add(jlb1);
+		
+		jp2.add(jlb2);
+		jp2.add(jtxtName);
+		
+		jp3.add(jlb3);
+		jp3.add(jtxtage);
+		
+		jp4.add(jlb4);
+		jp4.add(jrb1);
+		jp4.add(jrb2);
+		
+		jp5.add(jlb5);
+		jp5.add(jtxtno);
+		
+		jp6.add(jlb6);
+		jp6.add(jtxtnumber);
+		
+		jp7.add(jlb7);
+		jp7.add(jtxtid);
+		
+		jp8.add(jlb8);
+		jp8.add(sdept);
+		
+		jp9.add(jlb9);
+		jp9.add(jtxtdoorno);
+		
+		jp10.add(jlb10);
+		jp10.add(jtxtbedno);
+		
+		jp11.add(jb1);
+		jp11.add(new JLabel());
+		jp11.add(new JLabel());
+		jp11.add(new JLabel());
+		jp11.add(new JLabel());
+		jp11.add(new JLabel());
+		jp11.add(new JLabel());
+		jp11.add(jb2);
+		
+		this.add(jp1);
+		this.add(jp2);
+		this.add(jp3);
+		this.add(jp4);
+		this.add(jp5);
+		this.add(jp6);
+		this.add(jp7);
+		this.add(jp8);
+		this.add(jp9);
+		this.add(jp10);
+		this.add(jp11);
+		
+		this.setTitle("修改学生信息界面");
+		this.setSize(900,700);
+		this.setLocationRelativeTo(null);
+		this.setResizable(true);
+		this.setVisible(true);
+		this.setLayout(new GridLayout(11,1));
+		
+		  //给文本框设置值
+		GETSQL connect=new GETSQL();	
+	    GETSQL.ConnectSQL();
+	    String[] tableValues= connect.search(str);
+			// TODO Auto-generated catch block		e.printStackTrace();
+		jtxtName.setText(tableValues[0]);
+		jtxtage.setText(tableValues[1]);
+		if (tableValues[2].equals("男"))
+		{
+		jrb1.setSelected(true);
+	    }
+	    else if(tableValues[2].equals("女"))
+	   {
+		jrb2.setSelected(true);
+	   }
+		jtxtno.setText(tableValues[3]);
+		jtxtnumber.setText(tableValues[4]);
+		jtxtid.setText(tableValues[5]);
+	    sdept.add(tableValues[6]);
+		jtxtdoorno.setText(tableValues[7]);
+		jtxtbedno.setText(tableValues[8]);
+	}
+	
+	    
+	public void actionPerformed(ActionEvent e){
+		if (e.getActionCommand()=="确定")
+		{
+			String name=jtxtName.getText();				
+			int age=Integer.parseInt(jtxtage.getText());
+			String sex=null;
+			if(jrb1.isSelected()) {
+				sex="男";
+			}else if(jrb2.isSelected()){
+				sex="女";
+			}				
+			String num=jtxtno.getText();
+			String phone=jtxtnumber.getText();
+			String sdept1=sdept.getSelectedItem().toString();
+			String room=jtxtdoorno.getText();
+			int bed=Integer.parseInt(jtxtbedno.getText());
+			try {
+				GETSQL mysql=new GETSQL();
+				GETSQL.ConnectSQL();
+				mysql.updateInformation(name,age,sex,num,phone,sdept1,room,bed);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getActionCommand()=="返回")
+		{
+			dispose();
+			new stu_select();
+		}
+	}
+	public static void main(String[] args) throws SQLException {
+		new stu_change(str);
+	}
+}
+	

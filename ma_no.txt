@@ -1,0 +1,73 @@
+package sy;
+
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class ma_no extends JFrame implements ActionListener{
+	JPanel jp1,jp2,jp3;
+	JLabel jlb1,jlb2;
+	JButton jb1,jb2,jb3;
+	JTextField no=new JTextField(10);
+	public ma_no(){
+		jp1=new JPanel();
+		jp2=new JPanel();
+		jp3=new JPanel();
+		jlb1=new JLabel("根据学号查找");
+		jlb2=new JLabel("请输入学号");
+	    Font m=new Font("TimesRoman",Font.BOLD,25);
+	    jlb1.setFont(m);
+	    Font m1=new Font("TimesRoman",Font.BOLD,20);
+	    jlb2.setFont(m1);
+	    jb1=new JButton("查找");
+		jb1.addActionListener(this);
+		jb2=new JButton("取消");
+		jb2.addActionListener(this);
+		jb3=new JButton("返回");
+		jb3.addActionListener(this);
+		jp1.add(jlb1);
+		
+		jp2.add(jlb2);
+		jp2.add(no);
+		
+		jp3.add(jb1);
+		jp3.add(jb2);
+		jp3.add(jb3);
+		
+		this.add(jp1);
+		this.add(jp2);
+		this.add(jp3);
+		this.setTitle("宿舍管理员信息系统");
+		this.setSize(600,300);
+		this.setLocationRelativeTo(null);
+		this.setResizable(true);
+		this.setVisible(true);
+		this.setLayout(new GridLayout(4,1));
+	}
+	public void actionPerformed(ActionEvent e){
+		if (e.getActionCommand()=="查找")
+		{
+			try {
+				Tabel1 tabel=new Tabel1(no.getText());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getActionCommand()=="取消")
+		{}
+		if (e.getActionCommand()=="返回")
+		{}
+	}
+	public static void main(String[] args) {
+		new ma_no();
+	}
+}

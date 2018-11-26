@@ -1,0 +1,51 @@
+package sy;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+class Tabel4 {
+	JFrame frame=new JFrame("宿舍管理信息系统");
+	Container cont=frame.getContentPane();
+	JButton b1=new JButton("返回");
+    public Tabel4() throws SQLException{      
+        JPanel title=new JPanel(); // 定义一个标题面板  
+		title.setLayout(new FlowLayout());
+		title.add(new JLabel("所有宿舍住宿情况")); //定义面板的标题
+		cont.add(title,"North"); //设置面板标题在窗体容器的位置，并把面板添加到窗体容器当中        
+        frame.setBounds(250,250,800,300);
+        cont.add(b1, "South");
+        String[] columnNames = {"姓名","年龄","性别","学号","手机号","身份证号","院系","宿舍门号","床号"};// 定义表格列名数组
+        GETSQL connect=new GETSQL();			
+        GETSQL.ConnectSQL();
+        String[][] tableValues=connect.searchall();
+   
+        // 创建指定列名和数据的表格
+        JTable table = new JTable(tableValues,columnNames);
+        // 创建显示表格的滚动面板
+        JScrollPane scrollPane = new JScrollPane(table);
+        // 将滚动面板添加到边界布局的中间
+        cont.add(scrollPane, BorderLayout.CENTER);
+
+        frame.setVisible(true);       
+        b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				frame.dispose();
+			}
+		});
+    }
+
+}
+

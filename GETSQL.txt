@@ -1,0 +1,223 @@
+package sy;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class GETSQL {
+	static String name;
+	static String password;
+	
+	public static Connection conn;
+	/*static Connection ct=null;
+	static PreparedStatement ps=null;
+	static ResultSet rs=null;*/
+	
+	//用于连接数据库的方法，可用于子类的继承
+	public static void ConnectSQL(){
+		{//com.mysql.jdbc.Driver
+			try {
+				Class.forName("com.mysql.jdbc.Driver"); //加载数据库驱动，注册到驱动管理器
+			    String url="jdbc:mysql://localhost:3306/宿舍管理系统?useSSL=false";
+				String username="root"; //数据库用户名
+				String password="123456";  //数据库密码
+			    conn=DriverManager.getConnection(url,username,password); //创建Connection连接			
+				if(conn!=null)
+				{
+					//System.out.println("数据库连接成功");
+					//conn.close(); //关闭数据库连接
+				}
+				else {
+					System.out.println("数据库连接失败");
+				}			
+			}catch(ClassNotFoundException e) {
+				e.printStackTrace();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static String querystu(String jtf) throws SQLException {
+		{
+			 Statement state=conn.createStatement();   //容器
+			 ResultSet rs;
+			// System.out.println(jtf);
+		     String sql="select password from student where name='"+jtf+"' ";   //SQL语句	     
+		     rs=state.executeQuery(sql);
+		     String ch=null;
+	         while (rs.next()){          
+	           ch=rs.getString("password");
+	         }
+             rs.close();
+	         state.close();
+	         conn.close();
+		     return ch;   
+}		
+	}
+	
+	
+	
+
+	
+	
+	void add(String name,int age,String sex,String id,String phone,String identity,String dept,String room,int roomnum) throws SQLException{
+		Statement state=conn.createStatement();
+		String sql=" insert into information(name,age,sex,id, phone, identity,dept,room,roomnum) values('"+name+"','"+age+"','"+sex+"',"
+        		+ " '"+id+"','"+phone+"','"+identity+"','"+dept+"','"+room+"','"+roomnum+"') ";  
+		state.executeUpdate(sql); 
+		System.out.println("学生信息插入到表information成功");
+        state.close();
+		conn.close();//关闭通道
+	}
+
+	
+	void delete(String id) throws SQLException   //从数据库里面删除学号为id的一行数据
+	{
+		Statement stmt=conn.createStatement();
+		System.out.println(id);
+		String sql="delete from information where id='"+id+"' ";
+		stmt.executeUpdate(sql);
+		System.out.println("删除数据成功");
+		stmt.close();
+	    conn.close();//关闭通道
+	}
+	
+	void updateInformation(String name,int age,String sex,String id,String phone,String dept,String room,int roomNum) throws SQLException 
+	{
+		Statement state=conn.createStatement();   //容器
+        String sql="update information set name='"+name+"', age='"+age+"', sex='"+sex+"', phone='"+phone+"', dept='"+dept+"', room='"+room+"',  roomNum='"+roomNum+"'   where id='"+id+"' ";   //SQL语句
+        state.executeUpdate(sql);         //将sql语句上传至数据库执行	        
+        System.out.println("更新学生信息成功");
+        conn.close();//关闭通道
+	}
+	
+	String[][] searchId(String id) throws SQLException   //从数据库里面查找学号为id的学生所有信息
+	{
+		Statement stmt6=conn.createStatement();
+		String sql="select * from information where id='"+id+"' ";
+		ResultSet rs6=null;
+		String s=null;
+		rs6=stmt6.executeQuery(sql);		
+		System.out.println("查找数据成功");
+		// 计算有多少条记录
+		int count = 0;
+		String[][] tableValues=new String[10000][9];
+		while(rs6.next()){			
+			tableValues[count][0]=rs6.getString("name");
+			tableValues[count][1]=rs6.getString("age");
+			tableValues[count][2]=rs6.getString("sex");
+			tableValues[count][3]=rs6.getString("id");
+			tableValues[count][4]=rs6.getString("phone");
+			tableValues[count][5]=rs6.getString("identity");
+			tableValues[count][6]=rs6.getString("dept");
+			tableValues[count][7]=rs6.getString("room");
+			tableValues[count][8]=rs6.getString("roomNum");
+			count++;
+		}
+		return tableValues;
+	}
+	
+	String[][] searchDept(String dept) throws SQLException   //从数据库里面查找院系为dept的所有学生所有信息
+	{
+		Statement stmt7=conn.createStatement();
+		String sql="select * from information where dept='"+dept+"' ";
+		ResultSet rs7=null;
+		rs7=stmt7.executeQuery(sql);
+		System.out.println("查找数据成功");
+		// 计算有多少条记录
+		int count = 0;
+		String[][] tableValues=new String[10000][9];
+		while(rs7.next()){
+        	tableValues[count][0]=rs7.getString("name");
+        	tableValues[count][1]=rs7.getString("age");
+        	tableValues[count][2]=rs7.getString("sex");
+            tableValues[count][3]=rs7.getString("id");
+            tableValues[count][4]=rs7.getString("phone");
+        	tableValues[count][5]=rs7.getString("identity");
+        	tableValues[count][6]=rs7.getString("dept");
+        	tableValues[count][7]=rs7.getString("room");
+        	tableValues[count][8]=rs7.getString("roomNum");
+		    count++;
+		}
+        return tableValues;
+	}
+	
+	String[][] searchRoom(String room) throws SQLException   //从数据库里面查找宿舍门号为room的所有学生所有信息
+	{
+		Statement stmt8=conn.createStatement();
+		String sql="select * from information where room='"+room+"' ";
+		ResultSet rs8=null;
+		String s=null;
+		rs8=stmt8.executeQuery(sql);
+		System.out.println("查找数据成功");
+		// 计算有多少条记录
+		int count = 0;
+	    String[][] tableValues=new String[10000][9];
+		while(rs8.next()){
+		    tableValues[count][0]=rs8.getString("name");
+		    tableValues[count][1]=rs8.getString("age");
+		    tableValues[count][2]=rs8.getString("sex");
+		    tableValues[count][3]=rs8.getString("id");
+		    tableValues[count][4]=rs8.getString("phone");
+		    tableValues[count][5]=rs8.getString("identity");
+		    tableValues[count][6]=rs8.getString("dept");
+		    tableValues[count][7]=rs8.getString("room");
+		    tableValues[count][8]=rs8.getString("roomNum");
+		    count++;
+		}
+	    return tableValues;
+	}
+	
+
+
+	String[][] searchall() throws SQLException   //从数据库里面查找宿舍门号为room的所有学生所有信息
+	{
+		Statement stmt8=conn.createStatement();
+		String sql="select * from information";
+		ResultSet rs8=null;
+		String s=null;
+		rs8=stmt8.executeQuery(sql);
+		System.out.println("查找数据成功");
+		// 计算有多少条记录
+		int count = 0;
+	    String[][] tableValues=new String[10000][9];
+		while(rs8.next()){
+		    tableValues[count][0]=rs8.getString("name");
+		    tableValues[count][1]=rs8.getString("age");
+		    tableValues[count][2]=rs8.getString("sex");
+		    tableValues[count][3]=rs8.getString("id");
+		    tableValues[count][4]=rs8.getString("phone");
+		    tableValues[count][5]=rs8.getString("identity");
+		    tableValues[count][6]=rs8.getString("dept");
+		    tableValues[count][7]=rs8.getString("room");
+		    tableValues[count][8]=rs8.getString("roomNum");
+		    count++;
+		}
+	    return tableValues;
+	}
+	
+	String[] search(String id) throws SQLException   //从数据库里面查找学号为id的学生信息，存到修改信息界面里面
+	{
+		Statement stmt6=conn.createStatement();
+		String sql="select * from information where id='"+id+"' ";
+		ResultSet rs6=null;
+		String s=null;
+		rs6=stmt6.executeQuery(sql);		
+		//System.out.println("查找数据成功");		
+		String[] tableValues=new String[9];
+		rs6.next();		
+		tableValues[0]=rs6.getString("name");
+		tableValues[1]=rs6.getString("age");
+		tableValues[2]=rs6.getString("sex");
+		tableValues[3]=rs6.getString("id");
+		tableValues[4]=rs6.getString("phone");
+		tableValues[5]=rs6.getString("identity");
+		tableValues[6]=rs6.getString("dept");
+		tableValues[7]=rs6.getString("room");
+		tableValues[8]=rs6.getString("roomNum");
+		return tableValues;
+	}
+}

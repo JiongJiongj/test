@@ -1,0 +1,100 @@
+package sy;
+
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+public class stu_select extends JFrame implements ActionListener{
+	JPanel jp1,jp2,jp3,jp4,jp5,jp6;
+	JLabel jlb1;
+	JButton jb1;
+	JRadioButton jrb1,jrb2,jrb3,jrb4;
+	ButtonGroup bg;
+	public stu_select(){
+		jp1=new JPanel();
+		jp2=new JPanel();
+		jp3=new JPanel();
+		jp4=new JPanel();
+		jp5=new JPanel();
+		jp6=new JPanel();
+		jlb1=new JLabel("功能界面");
+	    Font m=new Font("TimesRoman",Font.BOLD,25);
+	    jlb1.setFont(m);
+		jb1=new JButton("返回");
+		jb1.addActionListener(this);
+		jrb1=new JRadioButton("新建信息");
+		jrb2=new JRadioButton("修改信息");
+		jrb3=new JRadioButton("删除信息");
+		jrb4=new JRadioButton("查询信息");
+		jrb1.addActionListener(this);
+		jrb2.addActionListener(this);
+		jrb3.addActionListener(this);
+		jrb4.addActionListener(this);
+		Font m1=new Font("TimesRoman",Font.BOLD,20);
+	    jrb1.setFont(m1);
+	    jrb2.setFont(m1);
+	    jrb3.setFont(m1);
+	    jrb4.setFont(m1);
+		bg=new ButtonGroup();
+		bg.add(jrb1);
+		bg.add(jrb2);
+		bg.add(jrb3);
+		bg.add(jrb4);
+		jp1.add(jlb1);
+		jp2.add(jrb1);
+		jp3.add(jrb2);
+		jp4.add(jrb3);
+		jp5.add(jrb4);
+		jp6.add(jb1);
+		this.add(jp1);
+		this.add(jp2);
+		this.add(jp3);
+		this.add(jp4);
+		this.add(jp5);
+		this.add(jp6);
+		this.setTitle("学生功能界面");
+		this.setSize(600,300);
+		this.setLocationRelativeTo(null);
+		this.setResizable(true);
+		this.setVisible(true);
+		this.setLayout(new GridLayout(6,1));
+	}
+	public void actionPerformed(ActionEvent e){
+		if (e.getActionCommand()=="新建信息")
+		{   
+			dispose();
+			new stu_add();
+		}
+		if (e.getActionCommand()=="修改信息")
+		{
+			dispose();
+			new stu_add();
+		}
+		if (e.getActionCommand()=="删除信息")
+		{
+			dispose();
+			new stu_delete();
+		}
+		if (e.getActionCommand()=="查询信息")
+		{
+			dispose();
+			new select();
+		}
+		if (e.getActionCommand()=="返回")
+		{
+			dispose();
+			new stu_login();
+		}
+	}
+	public static void main(String[] args) {
+		new stu_select();
+	}
+}
